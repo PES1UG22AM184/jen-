@@ -1,29 +1,43 @@
 pipeline {
-    agent any
+    agent any  // Use any available agent to run the pipeline
 
     stages {
+        // Build Stage
         stage('Build') {
             steps {
-                sh 'g++ -o hello_exec hello.cpp'
+                script {
+                    // Compile the C++ file using shell script (e.g., compile hello.cpp)
+                    sh 'g++ hello.cpp -o hello'
+                }
             }
         }
 
+        // Test Stage
         stage('Test') {
             steps {
-                sh './hello_exec'
+                script {
+                    // Run the compiled hello.cpp file and print output
+                    sh './hello'
+                }
             }
         }
 
+        // Deploy Stage (You can add custom steps for deploying the app)
         stage('Deploy') {
             steps {
-                echo 'Deployment successful!'
+                echo 'Deployment process is not defined yet.'
             }
         }
     }
 
     post {
         failure {
-            echo 'Pipeline failed'
+            // Run this if any stage fails
+            echo 'Pipeline failed.'
+        }
+        success {
+            // Run this if all stages succeed
+            echo 'Pipeline succeeded!'
         }
     }
 }
